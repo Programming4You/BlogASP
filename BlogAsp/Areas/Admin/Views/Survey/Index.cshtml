@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BlogAsp.BusinessLayer.DTO.PollDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Polls</h2>
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
+<br />
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.PollQuestion)
+        </th>
+
+        <th>Administration</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PollQuestion)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "DeleteQuestion", "Survey", new { @id = item.IdPollQuestion }, new { @class = "btn btn-danger btn-sm", onclick = "return confirm('Are you sure?');" })
+        </td>
+    </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Back to Admin", "Index", "Default")
+</div>

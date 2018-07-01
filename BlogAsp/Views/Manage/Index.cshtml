@@ -1,0 +1,42 @@
+﻿@model BlogAsp.Models.PaginationViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Change your account settings</h4>
+    
+    
+    @*@if (!string.IsNullOrEmpty(Model.UserImage))
+    {*@
+        <img src="@Model.Photo" alt="User Image" width="200"/>
+
+    @*}*@
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Create", "SetPassword")
+            }
+            ]
+        </dd>
+        <dt>User Image:</dt>
+        <dd>
+            [
+            @Html.ActionLink("Add your user image", "AddUserImage")
+            ]
+        </dd>
+
+    </dl>
+</div>

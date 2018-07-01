@@ -1,0 +1,82 @@
+﻿@model BlogAsp.Models.PollViewModel
+
+@{
+    ViewBag.Title = "Poll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <hr class="section">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-md-push-1 animate-box fadeInUp animated-fast">
+            <div class="gtco-contact-info">
+ 
+                <div id="votepollcont">
+
+                    <div ID="PanelPoll">
+                        <h3 id='pitanje'>@Model.Poll.PollQuestion</h3>
+                        <div id='odgovori'>
+                            <input type='hidden' id='questionid' value='@Model.Poll.IdPollQuestion' />
+                            @foreach (var a in Model.Poll.answers)
+                            {
+                                <div class='radio'>
+                                    <label><input type='radio' name='poll' value='@a.IdPollAnswer'>@a.PollAnswer</label>
+                                </div>
+                            }
+                            <button name='button' type='button' id='button' value='true' class='btn btn-primary' onclick='ajaxVotePoll();'>Vote</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-md-push-1 animate-box fadeInUp animated-fast">
+            <div class="gtco-contact-info">
+                <div id="votepollcont">
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+        function ajaxVotePoll() {
+            var checkedRadioButton = $("input[name=poll]:checked").val();
+            var questionid = $("#questionid").val();
+            $.ajax({
+                url: "/Poll/AjaxPollVote",
+                type: 'POST',
+                data: { vote: checkedRadioButton, question: questionid },
+                success: function (c) {
+                    var text = "";
+                    c = c.substring(0, 5);
+                    if (c != "Error")
+                    {
+                        text = "Thank you for voting!";
+                    }
+                    else
+                    {
+                        text = "You have already voted for this poll!";
+                    }
+                    $("#votepollcont").html(text);
+                }
+            });
+
+        }
+    </script>
+}
+

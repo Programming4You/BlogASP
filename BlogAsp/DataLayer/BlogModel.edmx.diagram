@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9c296be0e81f46c6935b651bf28f2364" Name="Diagram1">
+        <EntityTypeShape EntityType="BlogModel.Article" Width="1.5" PointX="4.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlogModel.AspNetRole" Width="1.5" PointX="0.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlogModel.PollAnswer" Width="1.5" PointX="9.375" PointY="1.625" />
+        <EntityTypeShape EntityType="BlogModel.PollQuestion" Width="1.5" PointX="7.125" PointY="1.75" />
+        <EntityTypeShape EntityType="BlogModel.PollVote" Width="1.5" PointX="11.625" PointY="1.625" />
+        <AssociationConnector Association="BlogModel.FK_PollAnswers_PollQuestions" />
+        <AssociationConnector Association="BlogModel.FK_PollVotes_PollAnswers" />
+        <EntityTypeShape EntityType="BlogModel.AspNetUser" Width="1.5" PointX="2.5" PointY="1.5" />
+        <AssociationConnector Association="BlogModel.FK_dbo_Articles_dbo_AspNetUsers_AuthorId" />
+        <AssociationConnector Association="BlogModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

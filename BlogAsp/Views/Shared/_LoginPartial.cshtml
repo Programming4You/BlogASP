@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Random", "Random", "Article", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("All yours articles", "AllArticles", "Article", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Create", "Create", "Article", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Poll", "Poll", "Poll", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Author", "Author", "Home", new { area = "" }, null)</li>
+        @*<li><a href="@Url.Content("~/Content/Images/documentation.pdf")" target="_blank">Docs</a></li>*@
+        <li>@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })</li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li>@Html.ActionLink("Admin Panel", "Index", "Default", new { area = "Admin" }, null)</li>
+        }
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Random", "Random", "Article", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Poll", "Poll", "Poll", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Author", "Author", "Home", new { area = "" }, null)</li>
+        @*<li><a href="@Url.Content("~/Content/Images/documentation.pdf")" target="_blank">Docs</a></li>*@
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

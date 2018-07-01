@@ -1,0 +1,53 @@
+﻿@model PagedList.IPagedList<BlogAsp.BusinessLayer.DTO.UserDto>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Report</h2>
+<br />
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>FullName</th>
+        <th>UserName</th>
+        <th>
+            @Html.ActionLink("Last Login", "Report", new { sortDates = ViewBag.DateSortParm })
+        </th>
+        <th>Last Logout</th> 
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Logged)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Logout)
+            </td>
+
+        </tr>
+    }
+
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Report", new { page }))

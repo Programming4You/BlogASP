@@ -1,0 +1,78 @@
+﻿@model PagedList.IPagedList<BlogAsp.BusinessLayer.DTO.UserDto>
+
+
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
+<br />
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<br />
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Full Name</th>
+        <th>User Image</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>UserName</th>
+        <th>Role</th>
+        <th>Administration</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                <img src="@Url.Content(item.Photo)" alt="Image" style="height:200px; width:200px;" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleName.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Uuid }, new { @class = "btn btn-success btn-xs" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Uuid }, new { @class = "btn btn-warning btn-xs" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Uuid }, new { @class = "btn btn-danger btn-xs" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+

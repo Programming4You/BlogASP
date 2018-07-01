@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Admin Panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr />
+<div class="container">
+    <div class="row">
+        <form id="adminNav">
+            <ul class="nav navbar-nav navbar-left">
+                <li>@Html.ActionLink("Users", "Index", "User", new { area = "Admin" }, new { @class = "btn btn-info btn-lg" })</li>
+                <li>@Html.ActionLink("Roles", "Index", "Role", new { area = "Admin" }, new { @class = "btn btn-info btn-lg" })</li>
+                <li>@Html.ActionLink("Articles", "Index", "Text", new { area = "Admin" }, new { @class = "btn btn-info btn-lg" })</li>
+                <li>@Html.ActionLink("Polls", "Index", "Survey", new { area = "Admin" }, new { @class = "btn btn-info btn-lg" })</li>
+                <li>@Html.ActionLink("Report", "Report", "User", new { area = "Admin" }, new { @class = "btn btn-info btn-lg" })</li>
+            </ul>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<br />
+<div class="well">
+    <h2 class="text-center">Welcome to Admin Panel!</h2><br/>
+    <img class="card-img-top" src="/Content/UserImages/admin-login.gif" alt="Admin Area">
+</div>
+
+

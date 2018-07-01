@@ -1,0 +1,487 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BlogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Articles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AuthorId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ImagePath" Type="nvarchar(max)" />
+          <Property Name="DatePost" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="UserImage" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Logged" Type="datetime" />
+          <Property Name="Logout" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PollAnswers">
+          <Key>
+            <PropertyRef Name="idPollAnswer" />
+          </Key>
+          <Property Name="idPollAnswer" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPollQuestion" Type="int" Nullable="false" />
+          <Property Name="answer" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="idLastUserChange" Type="int" />
+          <Property Name="LastTimeChange" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PollQuestions">
+          <Key>
+            <PropertyRef Name="idPollQuestion" />
+          </Key>
+          <Property Name="idPollQuestion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="question" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="idLastUserChange" Type="int" />
+          <Property Name="LastTimeChange" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PollVotes">
+          <Key>
+            <PropertyRef Name="idPollVote" />
+          </Key>
+          <Property Name="idPollVote" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ipAddress" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="idAnswer" Type="int" Nullable="false" />
+          <Property Name="idLastUserChange" Type="int" />
+          <Property Name="LastTimeChange" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_dbo_Articles_dbo_AspNetUsers_AuthorId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PollAnswers_PollQuestions">
+          <End Role="PollQuestions" Type="Self.PollQuestions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PollAnswers" Type="Self.PollAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PollQuestions">
+              <PropertyRef Name="idPollQuestion" />
+            </Principal>
+            <Dependent Role="PollAnswers">
+              <PropertyRef Name="idPollQuestion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PollVotes_PollAnswers">
+          <End Role="PollAnswers" Type="Self.PollAnswers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PollVotes" Type="Self.PollVotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PollAnswers">
+              <PropertyRef Name="idPollAnswer" />
+            </Principal>
+            <Dependent Role="PollVotes">
+              <PropertyRef Name="idAnswer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spDeletePollQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPollQuestion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spInsertPollAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPollQuestion" Type="int" Mode="In" />
+          <Parameter Name="answer" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spInsertPollQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="question" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spInsertPollVote" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ipAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="idAnswer" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spUpdatePollQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPollQuestion" Type="int" Mode="In" />
+          <Parameter Name="question" Type="nvarchar" Mode="In" />
+          <Parameter Name="idLastUser" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="BlogModelStoreContainer">
+          <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PollAnswers" EntityType="Self.PollAnswers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PollQuestions" EntityType="Self.PollQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PollVotes" EntityType="Self.PollVotes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Articles_dbo_AspNetUsers_AuthorId" Association="Self.FK_dbo_Articles_dbo_AspNetUsers_AuthorId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Articles" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PollAnswers_PollQuestions" Association="Self.FK_PollAnswers_PollQuestions">
+            <End Role="PollQuestions" EntitySet="PollQuestions" />
+            <End Role="PollAnswers" EntitySet="PollAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PollVotes_PollAnswers" Association="Self.FK_PollVotes_PollAnswers">
+            <End Role="PollAnswers" EntitySet="PollAnswers" />
+            <End Role="PollVotes" EntitySet="PollVotes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BlogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AuthorId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DatePost" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="BlogModel.FK_dbo_Articles_dbo_AspNetUsers_AuthorId" FromRole="Article" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="BlogModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityContainer Name="BlogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Articles" EntityType="Self.Article" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="PollAnswers" EntityType="BlogModel.PollAnswer" />
+          <EntitySet Name="PollQuestions" EntityType="BlogModel.PollQuestion" />
+          <EntitySet Name="PollVotes" EntityType="BlogModel.PollVote" />
+          <AssociationSet Name="FK_PollAnswers_PollQuestions" Association="BlogModel.FK_PollAnswers_PollQuestions">
+            <End Role="PollQuestion" EntitySet="PollQuestions" />
+            <End Role="PollAnswer" EntitySet="PollAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PollVotes_PollAnswers" Association="BlogModel.FK_PollVotes_PollAnswers">
+            <End Role="PollAnswer" EntitySet="PollAnswers" />
+            <End Role="PollVote" EntitySet="PollVotes" />
+          </AssociationSet>
+          <FunctionImport Name="spInsertPollVote">
+            <Parameter Name="ipAddress" Mode="In" Type="String" />
+            <Parameter Name="idAnswer" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertPollQuestion">
+          <Parameter Name="question" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spDeletePollQuestion">
+          <Parameter Name="idPollQuestion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertPollAnswer">
+            <Parameter Name="idPollQuestion" Mode="In" Type="Int32" />
+            <Parameter Name="answer" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spUpdatePollQuestion">
+            <Parameter Name="idPollQuestion" Mode="In" Type="Int32" />
+            <Parameter Name="question" Mode="In" Type="String" />
+            <Parameter Name="idLastUser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="AspNetUsers" EntityType="BlogModel.AspNetUser" />
+          <AssociationSet Name="FK_dbo_Articles_dbo_AspNetUsers_AuthorId" Association="BlogModel.FK_dbo_Articles_dbo_AspNetUsers_AuthorId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="BlogModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="PollAnswer">
+          <Key>
+            <PropertyRef Name="idPollAnswer" />
+          </Key>
+          <Property Name="idPollAnswer" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPollQuestion" Type="Int32" Nullable="false" />
+          <Property Name="answer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="idLastUserChange" Type="Int32" />
+          <Property Name="LastTimeChange" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PollQuestion" Relationship="BlogModel.FK_PollAnswers_PollQuestions" FromRole="PollAnswer" ToRole="PollQuestion" />
+          <NavigationProperty Name="PollVotes" Relationship="BlogModel.FK_PollVotes_PollAnswers" FromRole="PollAnswer" ToRole="PollVote" />
+        </EntityType>
+        <EntityType Name="PollQuestion">
+          <Key>
+            <PropertyRef Name="idPollQuestion" />
+          </Key>
+          <Property Name="idPollQuestion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="question" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="idLastUserChange" Type="Int32" />
+          <Property Name="LastTimeChange" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PollAnswers" Relationship="BlogModel.FK_PollAnswers_PollQuestions" FromRole="PollQuestion" ToRole="PollAnswer" />
+        </EntityType>
+        <EntityType Name="PollVote">
+          <Key>
+            <PropertyRef Name="idPollVote" />
+          </Key>
+          <Property Name="idPollVote" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ipAddress" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="idAnswer" Type="Int32" Nullable="false" />
+          <Property Name="idLastUserChange" Type="Int32" />
+          <Property Name="LastTimeChange" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PollAnswer" Relationship="BlogModel.FK_PollVotes_PollAnswers" FromRole="PollVote" ToRole="PollAnswer" />
+        </EntityType>
+        <Association Name="FK_PollAnswers_PollQuestions">
+          <End Type="BlogModel.PollQuestion" Role="PollQuestion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="BlogModel.PollAnswer" Role="PollAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PollQuestion">
+              <PropertyRef Name="idPollQuestion" />
+            </Principal>
+            <Dependent Role="PollAnswer">
+              <PropertyRef Name="idPollQuestion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PollVotes_PollAnswers">
+          <End Type="BlogModel.PollAnswer" Role="PollAnswer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="BlogModel.PollVote" Role="PollVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PollAnswer">
+              <PropertyRef Name="idPollAnswer" />
+            </Principal>
+            <Dependent Role="PollVote">
+              <PropertyRef Name="idAnswer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="UserImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Logged" Type="DateTime" Precision="3" />
+          <Property Name="Logout" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Articles" Relationship="BlogModel.FK_dbo_Articles_dbo_AspNetUsers_AuthorId" FromRole="AspNetUser" ToRole="Article" />
+          <NavigationProperty Name="AspNetRoles" Relationship="BlogModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <Association Name="FK_dbo_Articles_dbo_AspNetUsers_AuthorId">
+          <End Type="BlogModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="BlogModel.Article" Role="Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="BlogModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="BlogModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BlogModelStoreContainer" CdmEntityContainer="BlogEntities">
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="BlogModel.Article">
+              <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="DatePost" ColumnName="DatePost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="BlogModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PollAnswers">
+            <EntityTypeMapping TypeName="BlogModel.PollAnswer">
+              <MappingFragment StoreEntitySet="PollAnswers">
+                <ScalarProperty Name="LastTimeChange" ColumnName="LastTimeChange" />
+                <ScalarProperty Name="idLastUserChange" ColumnName="idLastUserChange" />
+                <ScalarProperty Name="answer" ColumnName="answer" />
+                <ScalarProperty Name="idPollQuestion" ColumnName="idPollQuestion" />
+                <ScalarProperty Name="idPollAnswer" ColumnName="idPollAnswer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PollQuestions">
+            <EntityTypeMapping TypeName="BlogModel.PollQuestion">
+              <MappingFragment StoreEntitySet="PollQuestions">
+                <ScalarProperty Name="LastTimeChange" ColumnName="LastTimeChange" />
+                <ScalarProperty Name="idLastUserChange" ColumnName="idLastUserChange" />
+                <ScalarProperty Name="question" ColumnName="question" />
+                <ScalarProperty Name="idPollQuestion" ColumnName="idPollQuestion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PollVotes">
+            <EntityTypeMapping TypeName="BlogModel.PollVote">
+              <MappingFragment StoreEntitySet="PollVotes">
+                <ScalarProperty Name="LastTimeChange" ColumnName="LastTimeChange" />
+                <ScalarProperty Name="idLastUserChange" ColumnName="idLastUserChange" />
+                <ScalarProperty Name="idAnswer" ColumnName="idAnswer" />
+                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
+                <ScalarProperty Name="idPollVote" ColumnName="idPollVote" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spInsertPollVote" FunctionName="BlogModel.Store.spInsertPollVote" />
+          <FunctionImportMapping FunctionImportName="spInsertPollQuestion" FunctionName="BlogModel.Store.spInsertPollQuestion" />
+          <FunctionImportMapping FunctionImportName="spDeletePollQuestion" FunctionName="BlogModel.Store.spDeletePollQuestion" />
+          <FunctionImportMapping FunctionImportName="spInsertPollAnswer" FunctionName="BlogModel.Store.spInsertPollAnswer" />
+          <FunctionImportMapping FunctionImportName="spUpdatePollQuestion" FunctionName="BlogModel.Store.spUpdatePollQuestion" />
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="BlogModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Logout" ColumnName="Logout" />
+                <ScalarProperty Name="Logged" ColumnName="Logged" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserImage" ColumnName="UserImage" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="BlogModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
